@@ -13,7 +13,7 @@ RUN R -e "install.packages(c('shiny', 'tidyverse', 'leaflet'))"
 
 # Copy the app files into the Docker image
 COPY IM2.R /srv/shiny-server/
-COPY style.css /srv/shiny-server/www/
+COPY www/style.css /srv/shiny-server/www/
 COPY data/ /srv/shiny-server/data/
 
 # Expose the port for the Shiny app
