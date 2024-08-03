@@ -25,21 +25,27 @@ ccolors <- c("#7CADCD", "#366F95", "#CAB717", "#9A6F3C")
 
 # Define the UI for the Shiny app
 ui <- fluidPage(
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+  ),
   style = "text-align: left;",
   titlePanel("Colne River Action Plan (CRAP)"),
-  mainPanel(
-    selectInput(
-      "parameter",
-      "Select Bacteria",
-      choices = c(
-        "Enterococcus" = "NFP_ENT",
-        "E. coli" = "NFP_EC"
-      )
-    ),
-    leafletOutput("map", height = "80vh", width = "170vh")
+  fluidRow(
+    column(
+      width = 12,
+      class = "main-content",
+      selectInput(
+        "parameter",
+        "Select Bacteria",
+        choices = c(
+          "Enterococcus" = "NFP_ENT",
+          "E. coli" = "NFP_EC"
+        )
+      ),
+      leafletOutput("map")
+    )
   )
 )
-leafletOutput("map", )
 
 # Define the server logic
 server <- function(input, output) {
