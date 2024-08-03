@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages(c('shiny', 'tidyverse', 'leaflet'))"
 
 # Copy the app files into the Docker image
-COPY IM2.R /srv/shiny-server/
+COPY app.R /srv/shiny-server/
 COPY www/style.css /srv/shiny-server/www/
 COPY data/ /srv/shiny-server/data/
 
