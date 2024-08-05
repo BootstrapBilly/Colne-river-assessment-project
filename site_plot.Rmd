@@ -42,7 +42,7 @@ as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")
 data %>%
 #  filter(Waterway == "Blackwater") %>%
 
-ggplot(aes(y = ESBL, x = as.Date(`dateCollected (dd/mm/yy)`, "%d/%m/%Y")))+
+ggplot(aes(y = E.coli, x = as.Date(`dateCollected (dd/mm/yy)`, "%d/%m/%Y")))+
   geom_point(aes(col = Waterway))+
   geom_smooth()+
 #  scale_y_continuous(trans='log10')+
@@ -61,29 +61,6 @@ ggplot(aes(y = ESBL, x = as.Date(`dateCollected (dd/mm/yy)`, "%d/%m/%Y")))+
 
 
 
-
-
-```{r}
-# need to change month to dlb jam = 1 etc.
-
-data %>%
-#  filter(Waterway == "Blackwater") %>%
-
-ggplot(aes(y = ESBL, x = month))+
-  geom_point(aes(col = Waterway))+
-  geom_smooth()+
-#  scale_y_continuous(trans='log10')+
-  geom_hline(yintercept=1000)+
-#  coord_cartesian(ylim = c(0, 10000))+
-  
-  theme_bw()
-
-#  geom_point()
-
-
-
-
-```
 
 
 
