@@ -33,22 +33,44 @@ head(data)
 
 
 ```{}
-as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")
+min(as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y"))
 
 ```
 
 ```{r}
 
 data %>%
-  filter(Waterway == "Stour") %>%
+#  filter(Waterway == "Stour") %>%
 
 ggplot(aes(y = E.coli, x = as.Date(`dateCollected (dd/mm/yy)`, "%d/%m/%Y")))+
+  
+
+  
+    annotate("rect",
+           xmin=min(as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")),
+           xmax=max(as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")),
+           ymin=c(0) , ymax=c(500),
+           alpha=0.8,
+           fill="lightblue")+
+    
+  
+    annotate("rect",
+           xmin=min(as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")),
+           xmax=max(as.Date(data$`dateCollected (dd/mm/yy)`, "%d/%m/%Y")),
+           ymin=c(500) , ymax=Inf,
+           alpha=0.8,
+           fill="#3d251e")+
+  
+  
   geom_point(aes(col = Waterway))+
   geom_smooth()+
 # scale_y_continuous(trans='log10')+
-  geom_hline(yintercept=250)+
-  geom_hline(yintercept=500)+
+  geom_hline(yintercept=500, linetype = "dotted")+
+  geom_hline(yintercept=1000, linetype = "dotted")+
+  geom_hline(yintercept=1000, linetype = "dotted")+
   coord_cartesian(ylim = c(0, 10000))+
+  
+ 
   
   theme_bw()
 
@@ -58,8 +80,53 @@ ggplot(aes(y = E.coli, x = as.Date(`dateCollected (dd/mm/yy)`, "%d/%m/%Y")))+
 
 
 
+```{r}
 
 
+         
+
+
+
+```
+```{r}
+
+data %>%
+#  filter(Waterway == "Stour") %>%
+
+ggplot(aes(y = E.coli, x = match(data$month, month.name)))+
+  
+
+  
+    annotate("rect",
+           xmin=0,
+           xmax=12,
+           ymin=c(0) , ymax=c(500),
+           alpha=0.8,
+           fill="lightblue")+
+
+
+    annotate("rect",
+           xmin=0,
+           xmax=12,
+           ymin=c(500) , ymax=Inf,
+           alpha=0.8,
+           fill="#3d251e")+
+
+  
+  geom_point(aes(col = Waterway))+
+  geom_smooth()+
+# scale_y_continuous(trans='log10')+
+  geom_hline(yintercept=500, linetype = "dotted")+
+  geom_hline(yintercept=1000, linetype = "dotted")+
+  geom_hline(yintercept=1000, linetype = "dotted")+
+  coord_cartesian(ylim = c(0, 10000))+
+  
+ 
+  
+  theme_bw()
+
+
+```
 
 
 
