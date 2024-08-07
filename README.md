@@ -4,6 +4,10 @@ An R Shiny app to display our CRAP project water quality data
 
 ## API
 
+The deployed API is available on (this also has a cold start of ~60 seconds if it hasn't be used for a while)
+
+https://crap-api.onrender.com/data?parameter=NFP_ENT
+
 ### Overview
 The Plumber API is designed to read and process data for the map, providing a seamless integration between data processing and frontend visualization. This API serves as the backend data processor and handler for requests coming from the frontend application.
 
