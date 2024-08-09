@@ -1,45 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import { MapContainer, Popup, TileLayer, CircleMarker } from "react-leaflet";
+import {
+  gradeMap,
+  CompleteDataSample,
+  DataSample,
+  isECData,
+  isENTData,
+} from "./map.types";
+import { SampleFinding } from "./sample-finding";
+import { Legend } from "./map-legend";
 
-const colorMap: Record<number, string> = {
-  1: "#7CADCD",
-  2: "#366F95",
-  3: "#CAB717",
-  4: "#9A6F3C",
-};
-
-interface DataSample {
-  siteID?: string;
-  latitude?: number;
-  longitude?: number;
-  N?: number;
-  color?: number;
-}
-
-interface NFP_ENT extends DataSample {
-  NFP_ENT: number;
-}
-
-interface NFP_EC extends DataSample {
-  NFP_EC: number;
-}
-
-type DataSamples = Array<NFP_ENT | NFP_EC>;
-
-type CompleteDataSample = Required<NFP_ENT> | Required<NFP_EC>;
-
-const isENTData = (data: NFP_ENT | NFP_EC): data is NFP_ENT => {
-  return "NFP_ENT" in data;
-};
-
-const isECData = (data: NFP_ENT | NFP_EC): data is NFP_EC => {
-  return "NFP_EC" in data;
-};
-
-const isCompleteDataSample = (
-  data: NFP_ENT | NFP_EC
-): data is CompleteDataSample => {
+const isCompleteDataSample = (data: DataSample): data is CompleteDataSample => {
   return (
     "siteID" in data &&
     "latitude" in data &&
@@ -52,9 +24,9 @@ const isCompleteDataSample = (
 
 export const Map = () => {
   const mapDataQuery = useQuery<
-    AxiosResponse<DataSamples>,
+    AxiosResponse<Array<DataSample>>,
     Error,
-    Array<Required<NFP_ENT> | Required<NFP_EC>>
+    Array<CompleteDataSample>
   >({
     queryKey: ["MapData"],
     queryFn: () =>
@@ -87,34 +59,22 @@ export const Map = () => {
           key={site.siteID}
           center={[site.latitude, site.longitude]}
           radius={8}
-          color={`${colorMap[site.color]}`}
+          color={`${gradeMap[site.color].color}`}
           fillOpacity={0.7}
-          fillColor={colorMap[site.color]}
+          fillColor={gradeMap[site.color].color}
           stroke={true}
           weight={2}
         >
           <Popup>
-            <div>
-              <strong>Site ID:</strong> {site.siteID}
-              <br />
-              <strong>Number of Samples:</strong> {site.N}
-              <br />
-              <strong>NFP_ENT:</strong> {isENTData(site) && site.NFP_ENT}
-              <br />
-              <strong>Classification:</strong>{" "}
-              {site.color === 1
-                ? "Excellent"
-                : site.color === 2
-                ? "Good"
-                : site.color === 3
-                ? "Sufficient"
-                : site.color === 4
-                ? "Poor"
-                : "Unknown"}
+            <div className="flex flex-col">
+              <p>Site: {site.siteID}</p>
+              <SampleFinding {...site} />
+              <p>Number of Samples: {site.N}</p>
             </div>
           </Popup>
         </CircleMarker>
       ))}
+      <Legend />
     </MapContainer>
   );
 };
