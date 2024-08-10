@@ -1,45 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
 import { MapContainer, Popup, TileLayer, CircleMarker } from "react-leaflet";
-import {
-  gradeMap,
-  CompleteDataSample,
-  DataSample,
-  isECData,
-  isENTData,
-} from "./map.types";
+import { gradeMap, CompleteDataSample } from "./map.types";
 import { SampleFinding } from "./sample-finding";
 import { Legend } from "./map-legend";
 
-const isCompleteDataSample = (data: DataSample): data is CompleteDataSample => {
-  return (
-    "siteID" in data &&
-    "latitude" in data &&
-    "longitude" in data &&
-    "N" in data &&
-    "color" in data &&
-    (isECData(data) || isENTData(data))
-  );
-};
+interface Props {
+  data: Array<CompleteDataSample> | undefined;
+  isError?: boolean;
+  isLoading?: boolean;
+}
 
-export const Map = () => {
-  const mapDataQuery = useQuery<
-    AxiosResponse<Array<DataSample>>,
-    Error,
-    Array<CompleteDataSample>
-  >({
-    queryKey: ["MapData"],
-    queryFn: () =>
-      axios.get("https://crap-api.onrender.com/data?parameter=NFP_ENT"),
-    select: ({ data }) => data.filter((site) => isCompleteDataSample(site)),
-  });
-
-  if (mapDataQuery.isLoading) {
+export const Map = ({ data, isError, isLoading }: Props) => {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (mapDataQuery.isError) {
-    return <div>Error loading data: {mapDataQuery.error.message}</div>;
+  if (isError) {
+    return <div>Error loading map data</div>;
   }
 
   return (
@@ -47,16 +23,16 @@ export const Map = () => {
       center={[51.86, 0.99]}
       zoom={11.4}
       scrollWheelZoom={true}
-      style={{ height: "80vh", width: "100vw" }}
+      className="h-[65vh] md:h-[80vh] w-[98vw]"
     >
       <TileLayer
         url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {mapDataQuery.data?.map((site) => (
+      {data?.map((site) => (
         <CircleMarker
-          key={site.siteID}
+          key={`${site.siteID}-${site.value}-${site.color}`}
           center={[site.latitude, site.longitude]}
           radius={8}
           color={`${gradeMap[site.color].color}`}

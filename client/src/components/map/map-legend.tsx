@@ -24,17 +24,19 @@ export const Legend = () => {
   return (
     position && (
       <div className="leaflet-bottom leaflet-right">
-        <div className="bg-white py-3 px-6 m-2 mb-8 rounded-lg shadow-lg text-sm">
+        <div className="bg-white py-3 px-6 m-1 md:mb-8 rounded-lg shadow-lg text-sm">
           <h4 className="font-bold mb-2">Classification</h4>
-          {grades.map((grade) => (
-            <div key={grade} className="flex items-center mb-1">
-              <span
-                className="w-4 h-4 mr-2 inline-block rounded"
-                style={{ backgroundColor: gradeMap[grade].color }}
-              ></span>
-              <span>{gradeMap[grade].label}</span>
-            </div>
-          ))}
+          <div className="flex gap-x-4 md:flex-col md:gap-x-0">
+            {grades.map((grade) => (
+              <div key={grade} className="flex items-center mb-1">
+                <span
+                  className="w-4 h-4 mr-2 inline-block rounded"
+                  style={{ backgroundColor: gradeMap[grade].color }}
+                ></span>
+                <span>{gradeMap[grade].label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     )
