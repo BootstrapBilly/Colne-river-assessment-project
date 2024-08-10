@@ -39,7 +39,7 @@ function(parameter = "NFP_ENT") {
         cut(NFP_EC, breaks = ECbreaks, labels = ccolors)
       )
     ) %>%
-    select(siteID, latitude, longitude, N, color, parameter)
+    select(siteID, latitude, longitude, N, color, value = all_of(parameter))
 
   return(data)
 }
