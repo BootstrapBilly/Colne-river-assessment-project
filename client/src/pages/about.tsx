@@ -5,6 +5,9 @@ export const About = () => {
   return (
     <div className="md:max-w-2xl md:mx-auto">
       <div className="p-4 md:px-0 flex flex-col gap-y-4">
+        <strong className="font-light text-gray-400">
+          Colne River Assessment Project
+        </strong>
         <h1 className="text-2xl font-bold">
           Monitoring biodiversity and water quality in East Essex and Suffolk
         </h1>

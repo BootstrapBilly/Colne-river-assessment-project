@@ -1,9 +1,12 @@
-import { CompleteDataSample } from "./map.types";
+import { CompleteDataSample, specimenNameMap } from "./map.types";
+import { Route } from "../../routes/viewer";
 
 export const SampleFinding = (data: CompleteDataSample) => {
+  const { parameter } = Route.useSearch();
+
   return (
     <p>
-      <i>bum</i> (CFU/100 mL): {data.value}
+      <i>{specimenNameMap[parameter]}</i> (CFU/100 mL): {data.value}
     </p>
   );
 };

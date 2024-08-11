@@ -1,16 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import essexLogo from "../../assets/essex-logo.png";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconIconSolid,
   MapPinIcon as MapPinIconSolid,
 } from "@heroicons/react/24/solid";
+import MicroscopeSvg from "../../assets/abstract-logo.svg?react";
 
 export const NavBar = () => {
   return (
     <>
       <nav className="p-2 text-xs flex justify-between items-center">
-        <img src={essexLogo} alt="Essex logo" className="w-28" />
+        <div className="flex gap-2 items-center justify-center bg-black text-white text-sm p-4 py-2">
+          <MicroscopeSvg className="h-4 w-4 -ml-2" />
+          CRAP
+        </div>
         <div className="space-x-8 flex mr-2">
           <Link to="/" className="flex flex-col items-center justify-center">
             {({ isActive }) => {

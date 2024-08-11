@@ -22,5 +22,11 @@ export default tseslint.config({
       'warn',
       { allowConstantExport: true },
     ],
+    "import/no-unresolved": [
+      "error",
+      {
+        ignore: ["\\.svg\\?react$"],
+      },
+    ],
   },
 })
