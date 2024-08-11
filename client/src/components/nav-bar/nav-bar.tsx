@@ -4,6 +4,7 @@ import {
   HomeIcon as HomeIconIconSolid,
   MapPinIcon as MapPinIconSolid,
 } from "@heroicons/react/24/solid";
+// @ts-ignore
 import MicroscopeSvg from "../../assets/abstract-logo.svg?react";
 
 export const NavBar = () => {
