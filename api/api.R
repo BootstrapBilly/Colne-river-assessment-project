@@ -21,7 +21,7 @@ ENTbreaks <- c(-1, 100, 185, 200, 100000)
 ECbreaks <- c(-1, 250, 400, 500, 100000)
 ccolors <- c("#7CADCD", "#366F95", "#CAB717", "#9A6F3C")
 
-#* @apiTitle Water Quality API
+#* @apiTitle Colne Water Quality API
 
 #* Get processed water quality data
 #* @param parameter The parameter to filter by (e.g., NFP_ENT or NFP_EC)
