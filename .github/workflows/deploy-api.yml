@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List files for debugging
+        run: ls -la
+
       - name: Log in to Heroku Container Registry
         run: |
           echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
