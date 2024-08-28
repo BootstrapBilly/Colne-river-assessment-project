@@ -9,9 +9,20 @@ on:
       - 'api/**'
 
 jobs:
-  deploy:
+  build-and-test:
     runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Run tests with Docker
+        run: docker run --rm -v ${{ github.workspace }}:/app bootstrapbilly/crap-test-runner 
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+  
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
