@@ -17,7 +17,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run tests with Docker
-        run: docker run --rm -v ${{ github.workspace }}:/app bootstrapbilly/crap-test-runner 
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/app -p 8000:8000 bootstrapbilly/crap-api-tester /bin/sh -c "
+            Rscript api/server.R &
+            sleep 5
+            Rscript api/tests/run-tests.R
+          "
 
   deploy:
     needs: build-and-test

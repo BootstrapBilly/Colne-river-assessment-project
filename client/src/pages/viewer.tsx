@@ -22,7 +22,9 @@ export const Viewer = () => {
   >({
     queryKey: ["MapData", { parameter }],
     queryFn: () =>
-      axios.get(`https://crap-api.onrender.com/data?parameter=${parameter}`),
+      axios.get(
+        `https://crap-api-635719a27ef1.herokuapp.com/data?parameter=${parameter}`
+      ),
     select: ({ data }) => data.filter((site) => isCompleteDataSample(site)),
     staleTime: 5 * 60 * 1000,
   });
