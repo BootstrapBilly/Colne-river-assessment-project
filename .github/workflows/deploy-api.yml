@@ -11,41 +11,20 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Run tests with Docker
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/app -p 8000:8000 bootstrapbilly/crap-api-tester /bin/sh -c "
-            Rscript api/server.R &
-            sleep 5
-            Rscript api/tests/run-tests.R
-          "
+      - name: Build and Test
+        uses: ./.github/actions/api/test
 
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
-  
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Log in to Heroku Container Registry
-        run: |
-          echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-      - name: Build Docker image
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web -f api/Dockerfile .
-
-      - name: Push Docker image to Heroku
-        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-
-      - name: Release the app on Heroku
-        run: |
-          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      - name: Deploy to Heroku
+        uses: ./.github/actions/api/deploy
+        with:
+          heroku-app-name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku-api-key: ${{ secrets.HEROKU_API_KEY }}

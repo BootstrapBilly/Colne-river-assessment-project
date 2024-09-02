@@ -3,15 +3,15 @@ import {
   DataSample,
   isCompleteDataSample,
   specimenNameMap,
-} from "../components/map/map.types";
+} from "../components/leaflet-map/leaflet-map.types";
 import { Select } from "../components/select";
-import { Map } from "../components/map/map";
+import { LeafletMap } from "../components/leaflet-map/leaflet-map";
 import { useNavigate } from "@tanstack/react-router";
-import { Route } from "../routes/viewer";
+import { Route } from "../routes/map";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const Viewer = () => {
+export const Map = () => {
   const navigate = useNavigate({ from: Route.fullPath });
   const { parameter } = Route.useSearch();
 
@@ -20,6 +20,7 @@ export const Viewer = () => {
     Error,
     Array<CompleteDataSample>
   >({
+    enabled: !!parameter,
     queryKey: ["MapData", { parameter }],
     queryFn: () =>
       axios.get(
@@ -32,9 +33,8 @@ export const Viewer = () => {
   return (
     <>
       <div className="flex flex-col my-4 gap-2 mx-4">
-        <label htmlFor="choose-specimen">Select bacteria</label>
         <Select
-          id="choose-specimen"
+          label="Select bacteria"
           options={[
             {
               label: specimenNameMap.NFP_ENT,
@@ -50,7 +50,7 @@ export const Viewer = () => {
         />
       </div>
       <div className="flex justify-center">
-        <Map
+        <LeafletMap
           data={mapDataQuery.data}
           isError={mapDataQuery.isError}
           isLoading={mapDataQuery.isLoading}

@@ -1,11 +1,11 @@
-import { Link } from "@tanstack/react-router";
-import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { Link } from '@tanstack/react-router';
+import { HomeIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import {
   HomeIcon as HomeIconIconSolid,
   MapPinIcon as MapPinIconSolid,
-} from "@heroicons/react/24/solid";
-// @ts-ignore
-import MicroscopeSvg from "../../assets/abstract-logo.svg?react";
+} from '@heroicons/react/24/solid';
+// @ts-expect-error todo fix me
+import MicroscopeSvg from '../../assets/abstract-logo.svg?react';
 
 export const NavBar = () => {
   return (
@@ -35,8 +35,8 @@ export const NavBar = () => {
             }}
           </Link>
           <Link
-            to="/viewer"
-            search={{ parameter: "NFP_ENT" }}
+            to="/map"
+            search={{ parameter: 'NFP_ENT' }}
             className="flex flex-col items-center justify-center"
           >
             {({ isActive }) => {

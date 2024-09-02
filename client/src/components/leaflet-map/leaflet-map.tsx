@@ -1,7 +1,8 @@
 import { MapContainer, Popup, TileLayer, CircleMarker } from "react-leaflet";
-import { gradeMap, CompleteDataSample } from "./map.types";
+import { gradeMap, CompleteDataSample } from "./leaflet-map.types";
 import { SampleFinding } from "./sample-finding";
-import { Legend } from "./map-legend";
+import { Legend } from "./legend";
+import { Route } from "../../routes/map";
 
 interface Props {
   data: Array<CompleteDataSample> | undefined;
@@ -9,7 +10,9 @@ interface Props {
   isLoading?: boolean;
 }
 
-export const Map = ({ data, isError, isLoading }: Props) => {
+export const LeafletMap = ({ data, isError, isLoading }: Props) => {
+  const { parameter } = Route.useSearch();
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -40,6 +43,7 @@ export const Map = ({ data, isError, isLoading }: Props) => {
           fillColor={gradeMap[site.color].color}
           stroke={true}
           weight={2}
+          className={`circle-marker-${parameter}-${site.siteID}-${site.value}-${site.color}`}
         >
           <Popup>
             <div className="flex flex-col">
@@ -55,4 +59,4 @@ export const Map = ({ data, isError, isLoading }: Props) => {
   );
 };
 
-export default Map;
+export default LeafletMap;

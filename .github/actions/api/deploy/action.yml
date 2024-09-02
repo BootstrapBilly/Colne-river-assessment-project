@@ -1,0 +1,38 @@
+name: Deploy to Heroku
+description: Deploy a Docker image to Heroku.
+
+inputs:
+  heroku-app-name:
+    description: 'Heroku App Name'
+    required: true
+    type: string
+  heroku-api-key:
+    description: 'Heroku Api Key'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Log in to Heroku Container Registry
+      run: |
+        echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+      env:
+        HEROKU_API_KEY: ${{ inputs.heroku-api-key }}
+      shell: bash
+
+    - name: Build Docker image
+      run: docker build -t registry.heroku.com/${{ inputs.heroku-app-name }}/web -f api/Dockerfile .
+      shell: bash
+
+    - name: Push Docker image to Heroku
+      run: docker push registry.heroku.com/${{ inputs.heroku-app-name }}/web
+      shell: bash
+
+    - name: Release the app on Heroku
+      run: |
+        heroku container:release web --app ${{ inputs.heroku-app-name }}
+      env:
+        HEROKU_API_KEY: ${{ inputs.heroku-api-key }}
+      shell: bash

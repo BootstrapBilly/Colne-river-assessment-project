@@ -23,7 +23,7 @@ export const About = () => {
         </p>
         <Link
           className="p-4 my-2 md:mx-12  bg-blue-400 flex items-center justify-between text-lg"
-          to={"/viewer"}
+          to={"/map"}
           search={{ parameter: "NFP_ENT" }}
         >
           Explore bacteria hotspots <ChevronRightIcon className="h-6" />

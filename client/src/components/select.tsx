@@ -3,6 +3,7 @@ import {
   ListboxButton,
   ListboxOptions,
   ListboxOption,
+  Label,
 } from "@headlessui/react";
 import classNames from "classnames";
 
@@ -13,7 +14,7 @@ export interface SelectOption<Value> {
 
 interface SelectProps<Value> {
   className?: string;
-  id?: string;
+  label: string;
   onChange?: (value: Value) => void;
   options: Array<SelectOption<Value>>;
   value: Value;
@@ -21,12 +22,14 @@ interface SelectProps<Value> {
 
 export const Select = <Value extends string>({
   className,
+  label,
   options,
   onChange,
   value,
 }: SelectProps<Value>) => {
   return (
     <Listbox value={value} onChange={onChange}>
+      <Label>{label}</Label>
       <div className={classNames("relative", className)}>
         <ListboxButton
           className={classNames(

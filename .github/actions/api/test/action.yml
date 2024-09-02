@@ -1,0 +1,15 @@
+name: Api test
+description: Run API unit tests on Docker image
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Run tests with Docker
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/app -p 8000:8000 bootstrapbilly/crap-api-tester /bin/sh -c "
+          Rscript api/server.R &
+          sleep 5
+          Rscript api/tests/run-tests.R
+        "
+      shell: bash

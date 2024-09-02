@@ -1,0 +1,74 @@
+name: Deploy to Render
+description: Deploy the application to Render and check deployment status.
+
+inputs:
+  render-api-key:
+    description: "Render API Key"
+    required: true
+    type: string
+
+  service-id:
+    description: "Render Service ID"
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Trigger render deployment
+      id: deploy
+      env:
+        RENDER_API_KEY: ${{ inputs['render-api-key'] }}
+      run: |
+        DEPLOY_ID=$(curl -X POST \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Accept: application/json" \
+          -H "Content-Type: application/json" \
+          -d '{}' \
+          https://api.render.com/v1/services/${{ inputs['service-id'] }}/deploys | jq -r '.id')
+        
+        echo "Deploy ID: $DEPLOY_ID"
+        echo "deploy_id=$DEPLOY_ID" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Check deployment status
+      env:
+        RENDER_API_KEY: ${{ inputs['render-api-key'] }}
+      run: |
+        DEPLOY_ID=${{ env.deploy_id }}
+        SERVICE_ID="${{ inputs['service-id'] }}"
+        STATUS=""
+        MAX_ATTEMPTS=20
+        ATTEMPT=0
+        while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+          RESPONSE=$(curl -s -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Accept: application/json" \
+            https://api.render.com/v1/services/$SERVICE_ID/deploys/$DEPLOY_ID)
+          
+          echo "Full API Response: $RESPONSE"
+          
+          STATUS=$(echo $RESPONSE | jq -r '.status')
+          
+          echo "Deployment status: $STATUS"
+          
+          if [ "$STATUS" = "live" ]; then
+            echo "Deployment successful!"
+            exit 0
+          elif [ "$STATUS" = "failed" ]; then
+            echo "Deployment failed!"
+            exit 1
+          fi
+          
+          ATTEMPT=$((ATTEMPT + 1))
+          sleep 15  # Wait for 15 seconds before checking again
+        done
+
+        echo "Deployment status check timed out."
+        exit 1
+      shell: bash

@@ -1,6 +1,6 @@
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { gradeMap } from "./map.types";
+import { gradeMap } from "./leaflet-map.types";
 
 export const Legend = () => {
   const map = useMap();

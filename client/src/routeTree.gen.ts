@@ -13,7 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ViewerImport } from './routes/viewer'
+import { Route as MapImport } from './routes/map'
 
 // Create Virtual Routes
 
@@ -21,8 +21,8 @@ const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
-const ViewerRoute = ViewerImport.update({
-  path: '/viewer',
+const MapRoute = MapImport.update({
+  path: '/map',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -42,11 +42,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/viewer': {
-      id: '/viewer'
-      path: '/viewer'
-      fullPath: '/viewer'
-      preLoaderRoute: typeof ViewerImport
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapImport
       parentRoute: typeof rootRoute
     }
   }
@@ -54,7 +54,7 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexLazyRoute, ViewerRoute })
+export const routeTree = rootRoute.addChildren({ IndexLazyRoute, MapRoute })
 
 /* prettier-ignore-end */
 
@@ -65,14 +65,14 @@ export const routeTree = rootRoute.addChildren({ IndexLazyRoute, ViewerRoute })
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/viewer"
+        "/map"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/viewer": {
-      "filePath": "viewer.tsx"
+    "/map": {
+      "filePath": "map.tsx"
     }
   }
 }

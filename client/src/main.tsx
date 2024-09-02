@@ -6,12 +6,10 @@ import "./index.css";
 import "leaflet/dist/leaflet.css";
 
 import { routeTree } from "./routeTree.gen";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClientProvider } from "./util/query-client-provider";
 
-const queryClient = new QueryClient();
-
-const router = createRouter({ routeTree });
+export const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -20,11 +18,11 @@ declare module "@tanstack/react-router" {
 }
 
 const rootElement = document.getElementById("root")!;
-if (!rootElement.innerHTML) {
+if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider>
         <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
       </QueryClientProvider>

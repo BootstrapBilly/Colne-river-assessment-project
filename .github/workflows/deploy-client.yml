@@ -9,75 +9,70 @@ on:
       - 'client/**'
 
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Node.js Dependencies
+        uses: ./.github/actions/client/install
+        id: install-node
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Lint Code
+        uses: ./.github/actions/client/lint
+
   build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build App
+        uses: ./.github/actions/client/build
+
+  typecheck:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Type Check
+        uses: ./.github/actions/client/type-check
+
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Tests
+        uses: ./.github/actions/client/test
+
+  integration-test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Integration Tests
+        uses: ./.github/actions/client/integration-test
+
+  deploy:
+    needs: [build, lint, typecheck, test, integration-test]
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
+    - name: Deploy to Render
+      uses: ./.github/actions/client/deploy
       with:
-        node-version: '18' 
-
-    - name: Change directory to /client
-      run: cd client
-
-    - name: Install dependencies
-      working-directory: client
-      run: yarn
-
-    - name: Build app
-      working-directory: client
-      run: npm run build
-
-    - name: Trigger render deployment
-      id: deploy
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      run: |
-        DEPLOY_ID=$(curl -X POST \
-          -H "Authorization: Bearer $RENDER_API_KEY" \
-          -H "Accept: application/json" \
-          -H "Content-Type: application/json" \
-          -d '{}' \
-          https://api.render.com/v1/services/srv-cqrnuuogph6c73a2lph0/deploys | jq -r '.id')
-        
-        echo "Deploy ID: $DEPLOY_ID"
-        echo "deploy_id=$DEPLOY_ID" >> $GITHUB_ENV
-
-    - name: Check deployment status
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      run: |
-        DEPLOY_ID=${{ env.deploy_id }}
-        SERVICE_ID="srv-cqrnuuogph6c73a2lph0"
-        STATUS=""
-        MAX_ATTEMPTS=20
-        ATTEMPT=0
-        while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-          RESPONSE=$(curl -s -H "Authorization: Bearer $RENDER_API_KEY" \
-            -H "Accept: application/json" \
-            https://api.render.com/v1/services/$SERVICE_ID/deploys/$DEPLOY_ID)
-          
-          echo "Full API Response: $RESPONSE"
-          
-          STATUS=$(echo $RESPONSE | jq -r '.status')
-          
-          echo "Deployment status: $STATUS"
-          
-          if [ "$STATUS" = "live" ]; then
-            echo "Deployment successful!"
-            exit 0
-          elif [ "$STATUS" = "failed" ]; then
-            echo "Deployment failed!"
-            exit 1
-          fi
-          
-          ATTEMPT=$((ATTEMPT + 1))
-          sleep 15  # Wait for 15 seconds before checking again
-        done
-
-        echo "Deployment status check timed out."
-        exit 1
+        render-api-key: ${{ secrets.RENDER_API_KEY }}
+        service-id: srv-cqrnuuogph6c73a2lph0
