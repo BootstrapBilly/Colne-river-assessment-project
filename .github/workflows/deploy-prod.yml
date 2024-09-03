@@ -82,7 +82,7 @@ jobs:
         uses: ./.github/actions/client/integration-test
 
   e2e-test:
-    needs: [install-client, deploy-api]
+    needs: [install-client]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
