@@ -81,8 +81,17 @@ jobs:
       - name: Run Integration Tests
         uses: ./.github/actions/client/integration-test
 
-  deploy:
-    needs: [build-client, lint-client, typecheck-client, test-client, integration-test-client, deploy-api]
+  e2e-test:
+    needs: [install-client, deploy-api]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run E2E Tests
+        uses: ./.github/actions/e2e
+
+  deploy-client:
+    needs: [build-client, lint-client, typecheck-client, test-client, integration-test-client, deploy-api, e2e-test]
     runs-on: ubuntu-latest
 
     steps:
