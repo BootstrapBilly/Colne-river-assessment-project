@@ -11,6 +11,12 @@ import { Route } from "../routes/map";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
 
+let apiUrl = "https://crap-api-635719a27ef1.herokuapp.com";
+
+if (import.meta.env.PROD) {
+  apiUrl = "https://crap-api-prod-2e20909e19a5.herokuapp.com/";
+}
+
 export const Map = () => {
   const navigate = useNavigate({ from: Route.fullPath });
   const { parameter } = Route.useSearch();
@@ -22,10 +28,7 @@ export const Map = () => {
   >({
     enabled: !!parameter,
     queryKey: ["MapData", { parameter }],
-    queryFn: () =>
-      axios.get(
-        `https://crap-api-635719a27ef1.herokuapp.com/data?parameter=${parameter}`
-      ),
+    queryFn: () => axios.get(`${apiUrl}/data?parameter=${parameter}`),
     select: ({ data }) => data.filter((site) => isCompleteDataSample(site)),
     staleTime: 5 * 60 * 1000,
   });

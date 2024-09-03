@@ -1,1 +1,96 @@
 name: Deploy Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build and Test
+        uses: ./.github/actions/api/test
+
+  deploy-api:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Deploy to Heroku
+        uses: ./.github/actions/api/deploy
+        with:
+          heroku-app-name: ${{ secrets.HEROKU_APP_NAME_PROD }}
+          heroku-api-key: ${{ secrets.HEROKU_API_KEY }}
+
+  install-client:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Node.js Dependencies
+        uses: ./.github/actions/client/install
+        id: install-node
+
+  lint-client:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Lint Code
+        uses: ./.github/actions/client/lint
+
+  build-client:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build App
+        uses: ./.github/actions/client/build
+        with:
+          mode: production
+
+
+  typecheck-client:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Type Check
+        uses: ./.github/actions/client/type-check
+
+  test-client:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Tests
+        uses: ./.github/actions/client/test
+
+  integration-test-client:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Integration Tests
+        uses: ./.github/actions/client/integration-test
+
+  deploy:
+    needs: [build-client, lint-client, typecheck-client, test-client, integration-test-client, deploy-api]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to Render
+      uses: ./.github/actions/client/deploy
+      with:
+        render-api-key: ${{ secrets.RENDER_API_KEY }}
+        service-id: srv-cqrnuuogph6c73a2lph0

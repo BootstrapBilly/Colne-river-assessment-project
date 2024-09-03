@@ -1,6 +1,12 @@
 name: Build App
 description: Build the application.
 
+inputs:
+  mode:
+    description: "Build mode"
+    required: true
+    type: string
+
 runs:
   using: "composite"
 
@@ -18,5 +24,5 @@ runs:
 
     - name: Build app
       working-directory: client
-      run: yarn build
+      run: tsc -b && vite build --mode ${{ inputs.mode }}
       shell: bash

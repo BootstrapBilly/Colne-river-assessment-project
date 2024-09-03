@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --mode development",
+    "build-prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
     "type-check": "yarn tsc --project tsconfig.app.json",
     "preview": "vite preview",
