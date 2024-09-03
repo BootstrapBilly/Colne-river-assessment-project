@@ -13,7 +13,7 @@ jobs:
         uses: ./.github/actions/api/test
 
   deploy-api:
-    needs: build-and-test
+    needs: build-and-test-api
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
