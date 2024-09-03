@@ -34,7 +34,7 @@ jobs:
         id: install-node
 
   lint-client:
-    needs: install
+    needs: install-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -43,7 +43,7 @@ jobs:
         uses: ./.github/actions/client/lint
 
   build-client:
-    needs: install
+    needs: install-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -55,7 +55,7 @@ jobs:
 
 
   typecheck-client:
-    needs: install
+    needs: install-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -64,7 +64,7 @@ jobs:
         uses: ./.github/actions/client/type-check
 
   test-client:
-    needs: install
+    needs: install-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -73,7 +73,7 @@ jobs:
         uses: ./.github/actions/client/test
 
   integration-test-client:
-    needs: install
+    needs: install-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
