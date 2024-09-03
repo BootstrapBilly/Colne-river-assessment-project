@@ -5,7 +5,7 @@ test("Smoke test", async ({ page }) => {
   const app = new BasePage(page);
 
   await app.load({
-    url: "https://colne-river-assessment-project.onrender.com/",
+    url: "https://crap-dev.onrender.com/",
   });
 
   await app.expectAboutPageTitle();
