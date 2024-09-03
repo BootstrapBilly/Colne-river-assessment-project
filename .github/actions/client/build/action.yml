@@ -24,5 +24,13 @@ runs:
 
     - name: Build app
       working-directory: client
-      run: tsc -b && vite build --mode ${{ inputs.mode }}
+      run: |
+        if [ "${{ inputs.mode }}" == "development" ]; then
+          yarn build
+        elif [ "${{ inputs.mode }}" == "production" ]; then
+          yarn build-prod
+        else
+          echo "Unknown mode: ${{ inputs.mode }}"
+          exit 1
+        fi
       shell: bash
