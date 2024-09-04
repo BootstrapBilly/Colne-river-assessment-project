@@ -2,6 +2,9 @@ name: Deploy Prod
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-test-api:
@@ -12,7 +15,7 @@ jobs:
       - name: Build and Test
         uses: ./.github/actions/api/test
 
-  deploy-api:
+  deploy-api-dev:
     needs: build-and-test-api
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +24,7 @@ jobs:
       - name: Deploy to Heroku
         uses: ./.github/actions/api/deploy
         with:
-          heroku-app-name: ${{ secrets.HEROKU_APP_NAME_PROD }}
+          heroku-app-name: ${{ secrets.HEROKU_APP_NAME }}
           heroku-api-key: ${{ secrets.HEROKU_API_KEY }}
 
   install-client:
@@ -53,7 +56,6 @@ jobs:
         with:
           mode: production
 
-
   typecheck-client:
     needs: install-client
     runs-on: ubuntu-latest
@@ -81,17 +83,8 @@ jobs:
       - name: Run Integration Tests
         uses: ./.github/actions/client/integration-test
 
-  e2e-test:
-    needs: [install-client]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Run E2E Tests
-        uses: ./.github/actions/e2e
-
-  deploy-client:
-    needs: [build-client, lint-client, typecheck-client, test-client, integration-test-client, deploy-api, e2e-test]
+  deploy-client-dev:
+    needs: [build-client, lint-client, typecheck-client, test-client, integration-test-client, deploy-api-dev]
     runs-on: ubuntu-latest
 
     steps:
@@ -102,4 +95,43 @@ jobs:
       uses: ./.github/actions/client/deploy
       with:
         render-api-key: ${{ secrets.RENDER_API_KEY }}
+        service-id: srv-crbkoobv2p9s73di6650
+
+  e2e-test:
+    needs: [deploy-api-dev, deploy-client-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run E2E Tests
+        uses: ./.github/actions/e2e
+  
+  deploy-api-prod:
+    needs: [e2e-test]
+    runs-on: ubuntu-latest
+
+    if: github.event_name == 'workflow_dispatch' 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Deploy to Heroku
+        uses: ./.github/actions/api/deploy
+        with:
+          heroku-app-name: ${{ secrets.HEROKU_APP_NAME_PROD }}
+          heroku-api-key: ${{ secrets.HEROKU_API_KEY }}
+
+  deploy-client-prod:
+    needs: [e2e-test, deploy-api-prod]
+    runs-on: ubuntu-latest
+
+    if: github.event_name == 'workflow_dispatch' 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to Render
+      uses: ./.github/actions/client/deploy
+      with:
+        render-api-key: ${{ secrets.RENDER_API_KEY }}
         service-id: srv-cqrnuuogph6c73a2lph0
+
