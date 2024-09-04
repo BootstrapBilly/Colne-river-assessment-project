@@ -110,7 +110,7 @@ jobs:
     needs: [e2e-test]
     runs-on: ubuntu-latest
 
-    if: github.event_name == 'workflow_dispatch' 
+    environment: production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -124,7 +124,7 @@ jobs:
     needs: [e2e-test, deploy-api-prod]
     runs-on: ubuntu-latest
 
-    if: github.event_name == 'workflow_dispatch' 
+    environment: production
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
