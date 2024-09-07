@@ -2,17 +2,35 @@ import { MapContainer, Popup, TileLayer, CircleMarker } from "react-leaflet";
 import { gradeMap, CompleteDataSample } from "./leaflet-map.types";
 import { SampleFinding } from "./sample-finding";
 import { Legend } from "./legend";
-import { Route } from "../../routes/map";
+import { MapSearch } from "../../routes/map";
+import classNames from "classnames";
 
-interface Props {
+interface StartingPosition {
+  zoom: number;
+  center: [number, number];
+}
+
+interface Props extends MapSearch {
+  className?: string;
   data: Array<CompleteDataSample> | undefined;
   isError?: boolean;
   isLoading?: boolean;
+  startingPosition?: StartingPosition;
+  showLegend?: boolean;
 }
 
-export const LeafletMap = ({ data, isError, isLoading }: Props) => {
-  const { parameter } = Route.useSearch();
-
+export const LeafletMap = ({
+  className,
+  data,
+  isError,
+  isLoading,
+  parameter,
+  startingPosition = {
+    zoom: 11.4,
+    center: [51.86, 0.99],
+  },
+  showLegend = true,
+}: Props) => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -23,10 +41,10 @@ export const LeafletMap = ({ data, isError, isLoading }: Props) => {
 
   return (
     <MapContainer
-      center={[51.86, 0.99]}
-      zoom={11.4}
+      center={startingPosition.center}
+      zoom={startingPosition.zoom}
       scrollWheelZoom={true}
-      className="h-[65vh] md:h-[80vh] w-[98vw]"
+      className={classNames("h-[65vh] md:h-[80vh] w-[98vw]", className)}
     >
       <TileLayer
         url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
@@ -54,7 +72,7 @@ export const LeafletMap = ({ data, isError, isLoading }: Props) => {
           </Popup>
         </CircleMarker>
       ))}
-      <Legend />
+      {showLegend && <Legend />}
     </MapContainer>
   );
 };

@@ -7,6 +7,8 @@ const mapSchema = z.object({
   parameter: z.enum(specimen),
 });
 
+export type MapSearch = z.infer<typeof mapSchema>;
+
 export const Route = createFileRoute("/map")({
   component: Map,
   validateSearch: (search) => mapSchema.parse(search),

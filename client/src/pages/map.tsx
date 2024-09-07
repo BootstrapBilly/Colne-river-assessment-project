@@ -10,12 +10,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Route } from "../routes/map";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
-
-let apiUrl = "https://crap-api-635719a27ef1.herokuapp.com";
-
-if (import.meta.env.PROD) {
-  apiUrl = "https://crap-api-prod-2e20909e19a5.herokuapp.com";
-}
+import { apiUrl } from "../api";
 
 export const Map = () => {
   const navigate = useNavigate({ from: Route.fullPath });
@@ -57,6 +52,7 @@ export const Map = () => {
           data={mapDataQuery.data}
           isError={mapDataQuery.isError}
           isLoading={mapDataQuery.isLoading}
+          parameter={parameter}
         />
       </div>
     </>
