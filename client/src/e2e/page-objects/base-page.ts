@@ -18,7 +18,7 @@ export class BasePage {
   }
 
   async expectAboutPageTitle(){
-    expect(this.page.getByText('Monitoring biodiversity and water quality in East Essex and Suffolk')).toBeVisible();
+    expect(this.page.getByRole('heading', {name: 'Monitoring biodiversity and water quality in East Essex and Suffolk'})).toBeVisible();
   }
 
   async expectMapWorks() {

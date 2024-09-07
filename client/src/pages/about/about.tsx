@@ -38,9 +38,9 @@ export const About = () => {
           Monitoring biodiversity and water quality in East Essex and Suffolk
         </h1>
       </div>
-      <div className="grid grid-cols-12 max-w-[1400px] mx-auto h-[50vh]">
+      <div className="grid grid-cols-12 max-w-[1400px] mx-auto h-[55vh]">
         {/* Left column */}
-        <div className="col-span-4 2xl:col-span-6 flex flex-col p-8 h-[50vh] 2xl:py-32">
+        <div className="col-span-4 2xl:col-span-6 flex flex-col p-8 h-[55vh] 2xl:py-28">
           <LeafletMap
             className="w-[100%] md:h-[40vh]"
             data={mapDataQuery.data}
@@ -54,7 +54,7 @@ export const About = () => {
             showLegend={false}
           />
           <Link
-            className="p-4 mt-8 bg-blue-400 flex items-center justify-between text-lg"
+            className="p-4 mt-3 bg-blue-400 flex items-center justify-between text-lg"
             to={"/map"}
             search={{ parameter: "NFP_ENT" }}
           >
@@ -63,8 +63,8 @@ export const About = () => {
         </div>
 
         {/* Right column */}
-        <div className="col-span-8 2xl:col-span-6 flex flex-col p-8 space-y-4 h-[50vh] 2xl:py-32">
-          <div className="flex-grow space-y-4">
+        <div className="col-span-8 2xl:col-span-6 flex flex-col p-8 space-y-4 h-[55vh] 2xl:py-28">
+          <div className="flex-grow space-y-4 bg-gray-100 px-8 flex flex-col items-center justify-center">
             <p>
               As widely publicized, our waterways are under immense stress from
               pollution which is exacerbated by climate change.

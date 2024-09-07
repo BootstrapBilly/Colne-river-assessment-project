@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
-import { About } from "./about.mobile";
 import { renderWithProviders } from "../../tests/render-with-providers";
+import { About } from "./about";
 
 test("contains link to the fundraiser page", async () => {
   renderWithProviders(About);
