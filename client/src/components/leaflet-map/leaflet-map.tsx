@@ -17,6 +17,7 @@ interface Props extends MapSearch {
   isLoading?: boolean;
   startingPosition?: StartingPosition;
   showLegend?: boolean;
+  enablePopups?: boolean;
 }
 
 export const LeafletMap = ({
@@ -30,6 +31,7 @@ export const LeafletMap = ({
     center: [51.86, 0.99],
   },
   showLegend = true,
+  enablePopups = true,
 }: Props) => {
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,7 +46,7 @@ export const LeafletMap = ({
       center={startingPosition.center}
       zoom={startingPosition.zoom}
       scrollWheelZoom={true}
-      className={classNames("h-[65vh] md:h-[80vh] w-[98vw]", className)}
+      className={classNames("h-[65vh] w-[98vw]", className)}
     >
       <TileLayer
         url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
@@ -63,13 +65,15 @@ export const LeafletMap = ({
           weight={2}
           className={`circle-marker-${parameter}-${site.siteID}-${site.value}-${site.color}`}
         >
-          <Popup>
-            <div className="flex flex-col">
-              <p>Site: {site.siteID}</p>
-              <SampleFinding {...site} />
-              <p>Number of Samples: {site.N}</p>
-            </div>
-          </Popup>
+          {enablePopups && (
+            <Popup>
+              <div className="flex flex-col">
+                <p>Site: {site.siteID}</p>
+                <SampleFinding {...site} />
+                <p>Number of Samples: {site.N}</p>
+              </div>
+            </Popup>
+          )}
         </CircleMarker>
       ))}
       {showLegend && <Legend />}

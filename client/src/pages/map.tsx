@@ -29,8 +29,8 @@ export const Map = () => {
   });
 
   return (
-    <>
-      <div className="flex flex-col my-4 gap-2 mx-4">
+    <div className="2xl:max-w-[1300px] 2xl:mx-auto">
+      <div className="flex flex-col my-4 gap-2 mx-4 2xl:mx-0">
         <Select
           label="Select bacteria"
           options={[
@@ -47,14 +47,15 @@ export const Map = () => {
           value={parameter}
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center xl:p-8 2xl:p-0">
         <LeafletMap
+          className=""
           data={mapDataQuery.data}
           isError={mapDataQuery.isError}
           isLoading={mapDataQuery.isLoading}
           parameter={parameter}
         />
       </div>
-    </>
+    </div>
   );
 };

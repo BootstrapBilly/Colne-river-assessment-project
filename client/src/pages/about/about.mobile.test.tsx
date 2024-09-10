@@ -1,9 +1,9 @@
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../tests/render-with-providers";
-import { About } from "./about";
+import { AboutMobile } from "./about.mobile";
 
 test("contains link to the fundraiser page", async () => {
-  renderWithProviders(About);
+  renderWithProviders(AboutMobile);
 
   expect(
     screen.getByRole("link", {
