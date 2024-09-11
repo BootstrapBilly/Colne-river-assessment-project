@@ -23,7 +23,7 @@ const NavItem = ({
   inactiveIcon: InactiveIcon,
   label,
 }: NavItemProps) => (
-  <Link to={to} search={search}>
+  <Link to={to} search={search} activeOptions={{ includeSearch: false }}>
     {({ isActive }) => (
       <span
         className={classNames(
