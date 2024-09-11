@@ -1,7 +1,7 @@
 import {
-  CompleteDataSample,
+  DataSampleWithLatNLong,
   DataSample,
-  isCompleteDataSample,
+  hasLatNLong,
   specimenNameMap,
 } from "../components/leaflet-map/leaflet-map.types";
 import { Select } from "../components/select";
@@ -19,12 +19,12 @@ export const Map = () => {
   const mapDataQuery = useQuery<
     AxiosResponse<Array<DataSample>>,
     Error,
-    Array<CompleteDataSample>
+    Array<DataSampleWithLatNLong>
   >({
     enabled: !!parameter,
     queryKey: ["MapData", { parameter }],
     queryFn: () => axios.get(`${apiUrl}/data?parameter=${parameter}`),
-    select: ({ data }) => data.filter((site) => isCompleteDataSample(site)),
+    select: ({ data }) => data.filter((site) => hasLatNLong(site)),
     staleTime: 5 * 60 * 1000,
   });
 

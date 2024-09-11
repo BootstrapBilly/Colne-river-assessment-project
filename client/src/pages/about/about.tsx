@@ -3,9 +3,9 @@ import { Link } from "@tanstack/react-router";
 import LandingImage from "../../assets/bg.jpeg";
 import axios, { AxiosResponse } from "axios";
 import {
-  CompleteDataSample,
+  DataSampleWithLatNLong,
   DataSample,
-  isCompleteDataSample,
+  hasLatNLong,
   specimen,
 } from "../../components/leaflet-map/leaflet-map.types";
 import { useQuery } from "@tanstack/react-query";
@@ -18,11 +18,11 @@ export const About = () => {
   const mapDataQuery = useQuery<
     AxiosResponse<Array<DataSample>>,
     Error,
-    Array<CompleteDataSample>
+    Array<DataSampleWithLatNLong>
   >({
     queryKey: ["MapData", { parameter: defaultSpecimin }],
     queryFn: () => axios.get(`${apiUrl}/data?parameter=${defaultSpecimin}`),
-    select: ({ data }) => data.filter((site) => isCompleteDataSample(site)),
+    select: ({ data }) => data.filter((site) => hasLatNLong(site)),
     staleTime: 5 * 60 * 1000,
   });
 

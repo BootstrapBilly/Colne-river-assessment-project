@@ -26,13 +26,24 @@ export class BasePage {
     const enteroccusDatapoint2 = "path.circle-marker-NFP_ENT-Co_15-0-1";
 
     const eColiDatapoint1 = "path.circle-marker-NFP_EC-Co_2-1612-4";
-    const eColiDatapoint2 = "path.circle-marker-NFP_EC-Co_13-566-4";
-
-    await expect(this.page.locator(enteroccusDatapoint1)).toBeVisible();
-    await expect(this.page.locator(enteroccusDatapoint2)).toBeVisible();
+    const eColiDatapoint2 = "path.circle-marker-NFP_EC-Mer_1-0-1";
 
     await expect(this.page.locator(eColiDatapoint1)).not.toBeVisible();
     await expect(this.page.locator(eColiDatapoint2)).not.toBeVisible();
+
+    await this.page.locator(enteroccusDatapoint1).click();
+    await expect(this.page.getByText('Site: Co_2')).toBeVisible();
+    await expect(this.page.getByText('Enterococcus (CFU/100 mL): 1492')).toBeVisible();
+    await expect(this.page.getByText('Number of Samples: 9')).toBeVisible();
+
+    await this.page.keyboard.press('Escape')
+
+    await this.page.locator(enteroccusDatapoint2).click();
+    await expect(this.page.getByText('Site: Co_15')).toBeVisible();
+    await expect(this.page.getByText('Enterococcus (CFU/100 mL): 0')).toBeVisible();
+    await expect(this.page.getByText('Number of Samples: 1')).toBeVisible();
+
+    await this.page.keyboard.press('Escape')
 
     await this.page.getByLabel("Select bacteria").click();
     await this.page.getByText("E. coli").click();
@@ -40,9 +51,19 @@ export class BasePage {
     await expect(this.page.locator(enteroccusDatapoint1)).not.toBeVisible();
     await expect(this.page.locator(enteroccusDatapoint2)).not.toBeVisible();
 
-    await expect(this.page.locator(eColiDatapoint1)).toBeVisible();
-    await expect(this.page.locator(eColiDatapoint2)).toBeVisible();
+    await this.page.locator(eColiDatapoint1).click();
+    await expect(this.page.getByText('Site: Co_2')).toBeVisible();
+    await expect(this.page.getByText('E. coli (CFU/100 mL): 1612')).toBeVisible();
+    await expect(this.page.getByText('Number of Samples: 9')).toBeVisible();
+
+    await this.page.keyboard.press('Escape')
+
+    await this.page.locator(eColiDatapoint2).click();
+    await expect(this.page.getByText('Site: Mer_1')).toBeVisible();
+    await expect(this.page.getByText('E. coli (CFU/100 mL): 0')).toBeVisible();
+    await expect(this.page.getByText('Number of Samples: 1')).toBeVisible();
   }
+
 
   async expectFundraisingLinkWorks() {
     await this.page

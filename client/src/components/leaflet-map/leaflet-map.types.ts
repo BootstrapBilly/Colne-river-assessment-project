@@ -27,15 +27,14 @@ export interface DataSample {
 export const specimen = ["NFP_ENT", "NFP_EC"] as const
 export type Specimen = typeof specimen[number];
 
-export type CompleteDataSample = Required<DataSample>;
+export type DataSampleWithLatNLong = DataSample & {
+  latitude: number;
+  longitude: number;
+};
 
-export const isCompleteDataSample = (data: DataSample): data is CompleteDataSample => {
+export const hasLatNLong = (data: DataSample): data is DataSampleWithLatNLong => {
   return (
-    "siteID" in data &&
     "latitude" in data &&
-    "longitude" in data &&
-    "N" in data &&
-    "color" in data &&
-    "value" in data
+    "longitude" in data
   );
 };

@@ -1,5 +1,5 @@
 import { MapContainer, Popup, TileLayer, CircleMarker } from "react-leaflet";
-import { gradeMap, CompleteDataSample } from "./leaflet-map.types";
+import { gradeMap, DataSampleWithLatNLong } from "./leaflet-map.types";
 import { SampleFinding } from "./sample-finding";
 import { Legend } from "./legend";
 import { MapSearch } from "../../routes/map";
@@ -12,7 +12,7 @@ interface StartingPosition {
 
 interface Props extends MapSearch {
   className?: string;
-  data: Array<CompleteDataSample> | undefined;
+  data: Array<DataSampleWithLatNLong> | undefined;
   isError?: boolean;
   isLoading?: boolean;
   startingPosition?: StartingPosition;
@@ -53,29 +53,32 @@ export const LeafletMap = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {data?.map((site) => (
-        <CircleMarker
-          key={`${site.siteID}-${site.value}-${site.color}`}
-          center={[site.latitude, site.longitude]}
-          radius={8}
-          color={`${gradeMap[site.color].color}`}
-          fillOpacity={0.7}
-          fillColor={gradeMap[site.color].color}
-          stroke={true}
-          weight={2}
-          className={`circle-marker-${parameter}-${site.siteID}-${site.value}-${site.color}`}
-        >
-          {enablePopups && (
-            <Popup>
-              <div className="flex flex-col">
-                <p>Site: {site.siteID}</p>
-                <SampleFinding {...site} />
-                <p>Number of Samples: {site.N}</p>
-              </div>
-            </Popup>
-          )}
-        </CircleMarker>
-      ))}
+      {data?.map((site) => {
+        const color = site.color ? gradeMap[site.color].color : "black";
+        return (
+          <CircleMarker
+            key={`${site.siteID}-${site.value}-${color}`}
+            center={[site.latitude, site.longitude]}
+            radius={8}
+            color={color}
+            fillOpacity={0.7}
+            fillColor={color}
+            stroke
+            weight={2}
+            className={`circle-marker-${parameter}-${site.siteID}-${site.value}-${site.color}`}
+          >
+            {enablePopups && (
+              <Popup>
+                <div className="flex flex-col">
+                  <p>Site: {site.siteID}</p>
+                  <SampleFinding {...site} />
+                  <p>Number of Samples: {site.N}</p>
+                </div>
+              </Popup>
+            )}
+          </CircleMarker>
+        );
+      })}
       {showLegend && <Legend />}
     </MapContainer>
   );

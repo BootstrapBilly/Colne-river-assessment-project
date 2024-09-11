@@ -27,11 +27,11 @@ export const EcoliMockData = [
     value: 1612,
   },
   {
-    siteID: 'Co_13',
+    siteID: 'Mer_1',
     latitude: 51.8936,
     longitude: 0.9007,
-    N: 3,
-    color: 4,
-    value: 566,
+    N: 1,
+    color: 1,
+    value: 0,
   },
 ];
