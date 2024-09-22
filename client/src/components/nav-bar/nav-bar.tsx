@@ -1,19 +1,27 @@
-import { Link } from "@tanstack/react-router";
-import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { Link } from '@tanstack/react-router';
+import { HomeIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import {
   HomeIcon as HomeIconIconSolid,
   MapPinIcon as MapPinIconSolid,
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid';
 // @ts-expect-error todo fix me
-import MicroscopeSvg from "../../assets/abstract-logo.svg?react";
-import classNames from "classnames";
-import { MapSearch } from "../../routes/map";
+import MicroscopeSvg from '../../assets/abstract-logo.svg?react';
+import classNames from 'classnames';
+import { MapSearch } from '../../routes/map';
+import { Section } from '../layout/section';
+
+type Icon = React.ForwardRefExoticComponent<
+  Omit<React.SVGProps<SVGSVGElement>, 'ref'> & {
+    title?: string;
+    titleId?: string;
+  } & React.RefAttributes<SVGSVGElement>
+>;
 
 interface NavItemProps {
   to: string;
   search?: MapSearch;
-  activeIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  inactiveIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  activeIcon: Icon;
+  inactiveIcon: Icon;
   label: string;
 }
 const NavItem = ({
@@ -27,19 +35,19 @@ const NavItem = ({
     {({ isActive }) => (
       <span
         className={classNames(
-          "flex flex-col items-center sm:flex-row sm:gap-2 sm:border-2 sm:border-orange-400 sm:px-2 sm:py-1 sm:text-lg",
-          { " sm:bg-orange-400 sm:border-orange-400": isActive }
+          'flex flex-col items-center sm:flex-row sm:gap-2 sm:border-2 sm:border-orange-500 sm:px-4 sm:py-2 sm:text-xl',
+          { 'sm:border-orange-500 sm:bg-orange-500': isActive }
         )}
       >
         {isActive ? (
           <>
-            <ActiveIcon className="h-8 sm:h-6 text-orange-400 sm:text-white" />
-            <b className="text-orange-400 sm:text-white">{label}</b>
+            <ActiveIcon className="h-8 text-orange-500 sm:h-6 sm:text-white" />
+            <b className="text-orange-500 sm:text-white">{label}</b>
           </>
         ) : (
           <>
-            <InactiveIcon className="h-8 sm:h-6 sm:text-orange-400" />
-            <span className="sm:text-orange-400">{label}</span>
+            <InactiveIcon className="h-8 sm:h-6 sm:text-orange-500" />
+            <span className="sm:text-orange-500">{label}</span>
           </>
         )}
       </span>
@@ -50,15 +58,18 @@ const NavItem = ({
 export const NavBar = () => {
   return (
     <>
-      <nav className="p-2 text-xs flex justify-between items-center sm:p-6 sm:py-4 2xl:max-w-[1300px] 2xl:mx-auto 2xl:px-0">
-        <div className="flex gap-2 items-center justify-center bg-black text-white text-sm p-4 py-2 sm:py-3 sm:text-md">
-          <MicroscopeSvg className="h-4 w-4 -ml-2" />
+      <Section
+        as="nav"
+        className={classNames('flex items-center justify-between text-xs')}
+      >
+        <div className="sm:text-md flex items-center justify-center gap-2 bg-black p-4 py-2 text-sm text-white sm:py-3">
+          <MicroscopeSvg className="-ml-2 h-4 w-4" />
           <span className="sm:hidden">CRAP</span>
-          <span className="hidden sm:flex ">
+          <span className="hidden sm:flex sm:text-lg">
             Colne River Assessment Project
           </span>
         </div>
-        <div className="space-x-8 flex mr-2 2xl:mr-0">
+        <div className="mr-2 flex space-x-8 2xl:mr-0">
           <NavItem
             to="/"
             activeIcon={HomeIconIconSolid}
@@ -67,14 +78,14 @@ export const NavBar = () => {
           />
           <NavItem
             to="/map"
-            search={{ parameter: "NFP_ENT" }}
+            search={{ parameter: 'NFP_ENT' }}
             activeIcon={MapPinIconSolid}
             inactiveIcon={MapPinIcon}
             label="Map"
           />
         </div>
-      </nav>
-      <div className="border-b mx-2 mt-1 2xl:border-none" />
+      </Section>
+      <div className="mx-2 mt-1 border-b 2xl:border-none" />
     </>
   );
 };

@@ -12,7 +12,7 @@ export default defineConfig({
     actionTimeout: 0,
     trace: 'on-first-retry',
   },
-  testMatch: ['src/**/*.spec.ts'], 
+  testMatch: ['src/**/*.spec.ts'],
   testIgnore: ['src/e2e/**/*.spec.ts'],
   projects: [
     {

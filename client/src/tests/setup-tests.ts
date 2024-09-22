@@ -1,8 +1,7 @@
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const global: any;
 
-import '@testing-library/jest-dom'; 
+import '@testing-library/jest-dom';
 import ResizeObserver from 'resize-observer-polyfill';
 
 global.ResizeObserver = ResizeObserver;

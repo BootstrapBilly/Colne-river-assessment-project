@@ -4,8 +4,8 @@ import {
   ListboxOptions,
   ListboxOption,
   Label,
-} from "@headlessui/react";
-import classNames from "classnames";
+} from '@headlessui/react';
+import classNames from 'classnames';
 
 export interface SelectOption<Value> {
   label: string;
@@ -30,18 +30,18 @@ export const Select = <Value extends string>({
   return (
     <Listbox value={value} onChange={onChange}>
       <Label>{label}</Label>
-      <div className={classNames("relative", className)}>
+      <div className={classNames('relative', className)}>
         <ListboxButton
           className={classNames(
-            "border-2 p-3 rounded-md w-full text-left",
+            'w-full rounded-md border-2 p-3 text-left',
             className
           )}
         >
           {options.find((option) => option.value === value)?.label ??
-            "Select..."}
+            'Select...'}
         </ListboxButton>
         <ListboxOptions
-          className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg"
+          className="absolute mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg"
           style={{ zIndex: 999999999999999 }}
         >
           {options.map(({ label, value }) => (
@@ -50,8 +50,8 @@ export const Select = <Value extends string>({
               value={value}
               className={({ active }) =>
                 classNames(
-                  "cursor-pointer select-none p-3",
-                  active ? "bg-blue-400 text-white" : "text-black"
+                  'cursor-pointer select-none p-3',
+                  active ? 'bg-blue-400 text-white' : 'text-black'
                 )
               }
             >

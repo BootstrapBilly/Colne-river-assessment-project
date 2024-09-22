@@ -12,7 +12,7 @@ export default defineConfig({
     actionTimeout: 0,
     trace: 'on-first-retry',
   },
-  testMatch: '**/*.spec.ts', 
+  testMatch: '**/*.spec.ts',
   projects: [
     {
       name: 'chromium',

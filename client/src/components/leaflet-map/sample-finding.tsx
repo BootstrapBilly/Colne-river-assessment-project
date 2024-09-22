@@ -1,7 +1,7 @@
-import { DataSampleWithLatNLong, specimenNameMap } from "./leaflet-map.types";
-import { Route } from "../../routes/map";
+import { DataSample, specimenNameMap } from './leaflet-map.types';
+import { Route } from '../../routes/map';
 
-export const SampleFinding = (data: DataSampleWithLatNLong) => {
+export const SampleFinding = (data: DataSample) => {
   const { parameter } = Route.useSearch();
 
   return (

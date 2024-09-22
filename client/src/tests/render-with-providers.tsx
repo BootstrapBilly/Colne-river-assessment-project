@@ -1,8 +1,8 @@
-import { render } from "@testing-library/react";
-import { RouteComponent, RouterProvider } from "@tanstack/react-router";
+import { render } from '@testing-library/react';
+import { RouteComponent, RouterProvider } from '@tanstack/react-router';
 
-import { createRootRoute, createRouter } from "@tanstack/react-router";
-import { QueryClientProvider } from "../util/query-client-provider";
+import { createRootRoute, createRouter } from '@tanstack/react-router';
+import { QueryClientProvider } from '../util/query-client-provider';
 
 const rootRoute = createRootRoute();
 

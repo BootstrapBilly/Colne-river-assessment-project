@@ -1,23 +1,24 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 
-import { NavBar } from "../components/nav-bar/nav-bar";
-import { lazy } from "react";
+import { NavBar } from '../components/nav-bar/nav-bar';
+import { lazy } from 'react';
 
 const TanStackRouterDevtools =
-  import.meta.env.MODE === "production"
+  import.meta.env.MODE === 'production'
     ? () => null
     : lazy(() =>
-        import("@tanstack/router-devtools").then((res) => ({
+        import('@tanstack/router-devtools').then((res) => ({
           default: res.TanStackRouterDevtools,
         }))
       );
 
 export const Route = createRootRoute({
   component: () => (
-    <>
-      <TanStackRouterDevtools />
+    <main>
       <NavBar />
       <Outlet />
-    </>
+      <TanStackRouterDevtools />
+    </main>
   ),
+  notFoundComponent: () => <div>That page was not found</div>,
 });
