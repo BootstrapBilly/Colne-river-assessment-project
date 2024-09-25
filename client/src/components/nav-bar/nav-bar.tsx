@@ -1,13 +1,18 @@
 import { Link } from '@tanstack/react-router';
-import { HomeIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import {
+  EnvelopeIcon,
+  HomeIcon,
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
 import {
   HomeIcon as HomeIconIconSolid,
   MapPinIcon as MapPinIconSolid,
+  EnvelopeIcon as EnvelopeIconSolid,
 } from '@heroicons/react/24/solid';
 // @ts-expect-error todo fix me
 import MicroscopeSvg from '../../assets/abstract-logo.svg?react';
 import classNames from 'classnames';
-import { MapSearch } from '../../routes/map';
+import { MapSearch } from '../../routes/map/route';
 import { Section } from '../layout/section';
 
 type Icon = React.ForwardRefExoticComponent<
@@ -24,6 +29,7 @@ interface NavItemProps {
   inactiveIcon: Icon;
   label: string;
 }
+
 const NavItem = ({
   to,
   search,
@@ -64,12 +70,12 @@ export const NavBar = () => {
       >
         <div className="sm:text-md flex items-center justify-center gap-2 bg-black p-4 py-2 text-sm text-white sm:py-3">
           <MicroscopeSvg className="-ml-2 h-4 w-4" />
-          <span className="sm:hidden">CRAP</span>
-          <span className="hidden sm:flex sm:text-lg">
+          <span className="lg:hidden">CRAP</span>
+          <span className="hidden md:text-lg lg:flex">
             Colne River Assessment Project
           </span>
         </div>
-        <div className="mr-2 flex space-x-8 2xl:mr-0">
+        <div className="mr-2 flex space-x-8 sm:space-x-4 2xl:mr-0">
           <NavItem
             to="/"
             activeIcon={HomeIconIconSolid}
@@ -82,6 +88,12 @@ export const NavBar = () => {
             activeIcon={MapPinIconSolid}
             inactiveIcon={MapPinIcon}
             label="Map"
+          />
+          <NavItem
+            to="/contact"
+            activeIcon={EnvelopeIconSolid}
+            inactiveIcon={EnvelopeIcon}
+            label="Contact"
           />
         </div>
       </Section>

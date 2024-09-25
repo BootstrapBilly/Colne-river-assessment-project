@@ -13,6 +13,10 @@ test('Nav bar works', async ({ page }) => {
 
   expect(page.getByText('Select bacteria')).toBeVisible();
 
+  await page.getByRole('link', { name: 'Contact', exact: true }).click();
+
+  expect(page.getByText('Get in touch')).toBeVisible();
+
   await page.getByRole('link', { name: 'About', exact: true }).click();
 
   await app.expectAboutPageTitle();

@@ -13,23 +13,29 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as MapImport } from './routes/map'
+import { Route as MapRouteImport } from './routes/map/route'
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
+const ContactRouteLazyImport = createFileRoute('/contact')()
+const IndexRouteLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
-const MapRoute = MapImport.update({
+const ContactRouteLazyRoute = ContactRouteLazyImport.update({
+  path: '/contact',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/contact/route.lazy').then((d) => d.Route))
+
+const MapRouteRoute = MapRouteImport.update({
   path: '/map',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/map/route.lazy').then((d) => d.Route))
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRouteLazyRoute = IndexRouteLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/index/route.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -39,14 +45,21 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexRouteLazyImport
       parentRoute: typeof rootRoute
     }
     '/map': {
       id: '/map'
       path: '/map'
       fullPath: '/map'
-      preLoaderRoute: typeof MapImport
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -54,7 +67,11 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexLazyRoute, MapRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRouteLazyRoute,
+  MapRouteRoute,
+  ContactRouteLazyRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -65,14 +82,18 @@ export const routeTree = rootRoute.addChildren({ IndexLazyRoute, MapRoute })
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/map"
+        "/map",
+        "/contact"
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index/route.lazy.tsx"
     },
     "/map": {
-      "filePath": "map.tsx"
+      "filePath": "map/route.tsx"
+    },
+    "/contact": {
+      "filePath": "contact/route.lazy.tsx"
     }
   }
 }

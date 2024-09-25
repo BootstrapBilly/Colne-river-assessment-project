@@ -2,7 +2,7 @@ import { MapContainer, Popup, TileLayer, CircleMarker } from 'react-leaflet';
 import { DataSample, gradeMap, Specimen } from './leaflet-map.types';
 import { SampleFinding } from './sample-finding';
 import { Legend } from './legend';
-import { MapSearch } from '../../routes/map';
+import { MapSearch } from '../../routes/map/route';
 import classNames from 'classnames';
 
 interface StartingPosition {
