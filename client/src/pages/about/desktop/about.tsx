@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router';
-import backgroundVideo from '../../../assets/bg.mp4';
 
 import MapPreviewPng from '../../../assets/map-preview.png';
 import { AboutIpadPortrait as IpadPortrait } from './about.ipad-portrait';
@@ -15,8 +14,9 @@ export const About = () => {
           muted
           loop
           playsInline
+          poster="bg-first-frame.jpg"
         >
-          <source src={backgroundVideo} type="video/mp4" />
+          <source src={'bg.mp4'} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>

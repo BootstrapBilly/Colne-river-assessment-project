@@ -1,6 +1,5 @@
 import { EnvelopeIcon, UserIcon } from '@heroicons/react/24/solid';
 import { Section } from '../../components/layout/section';
-import WivenhoeJpg from '../../assets/wivenhoe.jpg';
 
 export const Contact = () => {
   return (
@@ -26,7 +25,7 @@ export const Contact = () => {
       </div>
       <img
         className="mt-8 hidden h-[30rem] object-cover lg:flex 2xl:h-[50rem]"
-        src={WivenhoeJpg}
+        src={'wivenhoe.jpg'}
         alt="Wivenhoe river colne"
       />
     </Section>
